@@ -1,106 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>SPOTIFY</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SPOTIFY - Modern Music Player</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    /* Body & layout */
+    body {
+      background: linear-gradient(135deg, #1e1e1e, #121212);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    nav {
+      background: #121212;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: #1db954;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: default;
+    }
+
+    .brand img {
+      height: 50px;
+      width: 50px;
+      filter: drop-shadow(0 0 4px #1db954);
+    }
+
+    .nav-link {
+      color: #eee !important;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #1db954 !important;
+    }
+
+    /* Main container */
+    main.container {
+      max-width: 900px;
+      margin: 2rem auto 6rem;
+      padding: 1rem 2rem;
+      background: #222;
+      border-radius: 15px;
+      box-shadow: 0 0 30px #1db954aa;
+    }
+
+    main h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      letter-spacing: 1.5px;
+      color: #1db954;
+      user-select: none;
+    }
+
+    /* Song list */
+    .songlist {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      user-select: none;
+    }
+
+    .songitem {
+      display: flex;
+      align-items: center;
+      background: #111;
+      border-radius: 12px;
+      padding: 15px 20px;
+      box-shadow: 0 4px 15px #1db95422;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.3s ease;
+      gap: 18px;
+    }
+
+    .songitem:hover {
+      background: #1db95422;
+      transform: scale(1.05);
+      box-shadow: 0 6px 30px #1db954aa;
+    }
+
+    .songitem img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 10px #1db95455;
+      transition: transform 0.3s ease;
+    }
+
+    .songitem:hover img {
+      transform: scale(1.15) rotate(3deg);
+      box-shadow: 0 0 25px #1db954cc;
+    }
+
+    .songname {
+      flex-grow: 1;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #eee;
+      letter-spacing: 0.5px;
+    }
+
+    .timestamp {
+      font-size: 1rem;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .timestamp i {
+      color: #1db954;
+      font-size: 1.8rem;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+
+    .timestamp i:hover {
+      color: #1aff66;
+      transform: scale(1.2);
+    }
+
+    /* Bottom control bar */
+    footer.bottom {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #121212cc;
+      backdrop-filter: saturate(180%) blur(20px);
+      box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    /* Progress bar */
+    #Myprogressbar {
+      -webkit-appearance: none;
+      width: 90vw;
+      max-width: 900px;
+      height: 8px;
+      border-radius: 20px;
+      background: #333;
+      box-shadow: inset 0 0 8px #1db954bb;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #Myprogressbar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #1db954;
+      cursor: pointer;
+      box-shadow: 0 0 12px #1db954dd;
+      transition: background-color 0.3s ease;
+    }
+
+    #Myprogressbar:hover {
+      background-color: #1db95444;
+    }
+
+    /* Icons container */
+    .icons {
+      display: flex;
+      gap: 40px;
+      color: #1db954;
+      font-size: 2.6rem;
+      user-select: none;
+    }
+
+    .icons i {
+      cursor: pointer;
+      transition: color 0.3s ease, transform 0.25s ease;
+    }
+
+    .icons i:hover {
+      color: #1aff66;
+      transform: scale(1.3);
+    }
+
+    /* Song info in footer */
+    .songinfo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: #eee;
+      font-weight: 600;
+      font-size: 1.25rem;
+      user-select: none;
+    }
+
+    .songinfo img {
+      width: 48px;
+      height: 48px;
+      filter: drop-shadow(0 0 10px #1db954dd);
+      border-radius: 12px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    /* Pulse animation for gif */
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main.container {
+        margin: 1rem 1rem 8rem;
+        padding: 1rem 1.5rem;
+      }
+
+      .songitem img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .songname {
+        font-size: 1rem;
+      }
+
+      .icons {
+        gap: 30px;
+        font-size: 2rem;
+      }
+
+      .songinfo {
+        font-size: 1rem;
+        gap: 10px;
+      }
+
+      .songinfo img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li class="brand"><img src="logo.png" alt="Spotify">My Music</li>
-            <li>Home</li>
-            <li>About</li>
-        </ul>
-    </nav>
-    <div class="container">
-        <div class="songlist">
-            <h1>When It Hits You, You Feel No Pain</h1>
-            <div class="songitemcontainer">
-                <div class="songitem">
-                    <img src="./covers/1.jpg" alt="1">
-                    <span class="songname">Bolo Har Har</span>
-                    <span class="songlistplay"><span class="timestamp">03:30 <i id="0" class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/2.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">02:59 <i id="1"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/3.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">05:52 <i id="2"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/4.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">02:53 <i id="3"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/5.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">03:21 <i id="4"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/6.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">03:30 <i id="5"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/7.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">05:29 <i id="6"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/8.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">06:16 <i id="7"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/9.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">02:34 <i id="8"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                <div class="songitem">
-                    <img src="./covers/10.jpg" alt="1">
-                    <span class="songname">Kesariya</span>
-                    <span class="songlistplay"><span class="timestamp">03:49 <i id="9"
-                                class="fa-solid SongItemPlay fa-play-circle"></i></span></span>
-                </div>
-                                
-                </div>
-            </div>
-        </div>
-        <div class="songbanner"></div>
+  <!-- Navbar -->
+  <nav>
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="brand">
+        <img src="logo.png" alt="Spotify Logo" />
+        MY MUSIC
+      </div>
+      <ul class="nav">
+        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+      </ul>
     </div>
-    <div class="bottom">
-        <input type="range" name="range" id="Myprogressbar" min="0" value="0" max="100">
-        <div class="icons">
-            <!-- fontawesome icons -->
-            <i class="fa-solid fa-step-backward" id="previous"></i>
-            <i class="fa-solid fa-play-circle" id="masterPlay"></i>
-            <i class="fa-solid fa-step-forward" id="next"></i>
-        </div>
-        <div class="songinfo">
-            <img src="SOUND EFFECT.gif" width="42px" id="gif"> <span id="mastersongname">Bolo Har Har</span>
-        </div>
-    </div>
-    <script src="app.js"></script>
-</body>
+  </nav>
 
+  <!-- Main content -->
+  <main class="container">
+    <h1>When It Hits You, You Feel No Pain</h1>
+    <div class="songlist" id="songlist">
+      <!-- Songs dynamically inserted here -->
+    </div>
+  </main>
+
+  <!-- Footer / Player Controls -->
+  <footer class="bottom">
+    <input type="range" name="range" id="Myprogressbar" min="0" value="0" max="100" />
+    <div class="icons" role="group" aria-label="Audio Controls">
+      <i class="fa-solid fa-step-backward" id="previous" role="button" tabindex="0" aria-label="Previous"></i>
+      <i
+        class="fa-solid fa-play-circle"
+        id="masterPlay"
+        role="button"
+        tabindex="0"
+        aria-label="Play/Pause"
+      ></i>
+      <i class="fa-solid fa-step-forward" id="next" role="button" tabindex="0" aria-label="Next"></i>
+    </div>
+    <div class="songinfo" aria-live="polite" aria-atomic="true">
+      <img src="SOUND EFFECT.gif" alt="Playing animation" id="gif" style="opacity: 0" />
+      <span id="mastersongname">Select a song to play</span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Your music player script -->
+  <script>
+    // Songs data
+    const songs = [
+      { SongName: "Bolo Har har", filePath: "./songs/1.mp3", coverpath: "./covers/1.jpg", duration: "03:30" },
+      { SongName: "Brown rang", filePath: "./songs/2.mp3", coverpath: "./covers/2.jpg", duration: "02:59" },
+      { SongName: "Deva Deva", filePath: "./songs/3.mp3", coverpath: "./covers/3.jpg", duration: "05:52" },
+      { SongName: "Kesariya", filePath: "./songs/4.mp3", coverpath: "./covers/4.jpg", duration: "02:53" },
+      { SongName: "Hold On", filePath: "./songs/5.mp3", coverpath: "./covers/5.jpg", duration: "03:21" },
+      { SongName: "Millionaire", filePath: "./songs/6.mp3", coverpath: "./covers/6.jpg", duration: "03:30" },
+      { SongName: "Namo Namo", filePath: "./songs/7.mp3", coverpath: "./covers/7.jpg", duration: "05:29" },
+      { SongName: "Qaafirana", filePath: "./songs/8.mp3", coverpath: "./covers/8.jpg", duration: "06:16" },
+      { SongName: "Baller", filePath: "./songs/9.mp3", coverpath: "./covers/9.jpg", duration: "04:12" },
+      { SongName: "Warriyo", filePath: "./songs/10.mp3", coverpath: "./covers/10.jpg", duration: "03:43" },
+    ];
+
+    // DOM references
+    const songlist = document.getElementById("songlist");
+    const masterPlay = document.getElementById("masterPlay");
+    const progressBar = document.getElementById("Myprogressbar");
+    const gif = document.getElementById("gif");
+    const mastersongname = document.getElementById("mastersongname");
+
+    let audioElement = new Audio();
+    let currentSongIndex = -1;
+    let isPlaying = false;
+
+    // Render songs list dynamically
+    function renderSongs() {
+      songs.forEach((song, index) => {
+        const div = document.createElement("div");
+        div.classList.add("songitem");
+        div.setAttribute("data-index", index);
+
+        div.innerHTML = `
+          <img src="${song.coverpath}" alt="Cover for ${song.SongName}" />
+          <span class="songname">${song.SongName}</span>
+          <span class="timestamp">
+            ${song.duration}
+            <i class="fa-solid fa-play-circle play-icon"></i>
+          </span>
+        `;
+
+        songlist.appendChild(div);
+      });
+    }
+
+    // Play a song by index
+    function playSong(index) {
+      if (index < 0 || index >= songs.length) return;
+      if (currentSongIndex !== index) {
+        audioElement.src = songs[index].filePath;
+        mastersongname.textContent = songs[index].SongName;
+        audioElement.currentTime = 0;
+        currentSongIndex = index;
+      }
+      audioElement.play();
+      isPlaying = true;
+      updatePlayIcons();
+      masterPlay.classList.replace("fa-play-circle", "fa-pause-circle");
+      gif.style.opacity = 1;
+    }
+
+    // Pause song
+    function pauseSong() {
+      audioElement.pause();
+      isPlaying = false;
+      updatePlayIcons();
+      masterPlay.classList.replace("fa-pause-circle", "fa-play-circle");
+      gif.style.opacity = 0;
+    }
+
+    // Update all play icons on song list
+    function updatePlayIcons() {
+      document.querySelectorAll(".play-icon").forEach((icon, idx) => {
+        if (idx === currentSongIndex && isPlaying) {
+          icon.classList.replace("fa-play-circle", "fa-pause-circle");
+          icon.style.color = "#1aff66";
+        } else {
+          icon.classList.replace("fa-pause-circle", "fa-play-circle");
+          icon.style.color = "#1db954";
+        }
+      });
+    }
+
+    // Handle song item clicks
+    songlist.addEventListener("click", (e) => {
+      const clickedItem = e.target.closest(".songitem");
+      if (!clickedItem) return;
+      const index = parseInt(clickedItem.getAttribute("data-index"));
+
+      if (index === currentSongIndex && isPlaying) {
+        pauseSong();
+      } else {
+        playSong(index);
+      }
+    });
+
+    // Master play button toggle
+    masterPlay.addEventListener("click", () => {
+      if (!isPlaying && currentSongIndex === -1) {
+        playSong(0);
+      } else if (isPlaying) {
+        pauseSong();
+      } else {
+        playSong(currentSongIndex);
+      }
+    });
+
+    // Audio time update
+    audioElement.addEventListener("timeupdate", () => {
+      if (!audioElement.duration) return;
+      const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
+      progressBar.value = progressPercent;
+    });
+
+    // Seek
+    progressBar.addEventListener("input", () => {
+      if (!audioElement.duration) return;
+      audioElement.currentTime = (progressBar.value * audioElement.duration) / 100;
+    });
+
+    // Next and Previous controls
+    document.getElementById("next").addEventListener("click", () => {
+      if (currentSongIndex < songs.length - 1) {
+        playSong(currentSongIndex + 1);
+      } else {
+        playSong(0);
+      }
+    });
+
+    document.getElementById("previous").addEventListener("click", () => {
+      if (currentSongIndex > 0) {
+        playSong(currentSongIndex - 1);
+      } else {
+        playSong(songs.length - 1);
+      }
+    });
+
+    // When song ends, play next automatically
+    audioElement.addEventListener("ended", () => {
+      if (currentSongIndex < songs.length - 1) {
+        playSong(currentSongIndex + 1);
+      } else {
+        pauseSong();
+        audioElement.currentTime = 0;
+        masterPlay.classList.replace("fa-pause-circle", "fa-play-circle");
+        gif.style.opacity = 0;
+      }
+    });
+
+    // Initialize
+    renderSongs();
+  </script>
+</body>
 </html>
